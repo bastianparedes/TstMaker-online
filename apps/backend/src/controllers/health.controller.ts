@@ -4,6 +4,10 @@ import { Controller, Get } from '@nestjs/common';
 export class HealthController {
   @Get()
   async getHealth() {
-    return 'ok';
+    return {
+      success: true,
+      errors: [],
+      data: {}
+    };
   }
 }

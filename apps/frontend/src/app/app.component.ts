@@ -1,5 +1,5 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { NavComponent } from './components/common/nav/nav.component';
 
 @Component({
@@ -9,16 +9,4 @@ import { NavComponent } from './components/common/nav/nav.component';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit {
-  router = inject(Router);
-  pathsToShowNav = ['/', '/create_exam'];
-  showNav = false;
-
-  ngOnInit() {
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        this.showNav = this.pathsToShowNav.some((path) => event.urlAfterRedirects.includes(path));
-      }
-    });
-  }
-}
+export class AppComponent {}

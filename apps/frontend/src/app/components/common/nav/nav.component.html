@@ -1,26 +1,46 @@
 <nav class="tw-relative tw-flex tw-flex-col">
-  <div class="tw-bg-black tw-flex tw-py-5 tw-px-5 tw-gap-5 tw-items-center sm:tw-px-16">
-    <button
-      mat-fab
-      (click)="toggleOpen()"
-      class="tw-text-white tw-border-2 tw-border-white tw-border-solid tw-flex tw-justify-center tw-items-center tw-rounded-md tw-w-10 tw-h-10 sm:tw-hidden">
-      @if (this.isOpen) {
-        <mat-icon>close</mat-icon>
-      } @else {
-        <mat-icon>menu</mat-icon>
-      }
-    </button>
+  <div
+    class="tw-bg-black tw-flex tw-py-5 tw-px-5 tw-gap-5 tw-items-center sm:tw-px-16">
+    <p-button
+      class="sm:tw-hidden"
+      styleClass="tw-bg-inherit tw-border-2 tw-border-white"
+      icon="pi {{ this.isOpen ? 'pi-times' : 'pi-bars' }}"
+      (click)="toggleOpen()" />
+
     <div [class]="this.isOpen ? 'links-open' : 'links-closed'">
       <a
-        class="tw-h-8 tw-text-white tw-rounded-2xl tw-py-2 tw-px-3 tw-flex tw-justify-center tw-items-center tw-text-nowrap hover:tw-bg-sky-700"
+        class="tw-text-white tw-rounded-2xl tw-py-2 tw-px-3 tw-flex tw-justify-center tw-items-center tw-text-nowrap"
         href="/"
         >{{ 'nav.home' | translate }}</a
       >
-      <a
-        class="tw-h-8 tw-text-white tw-rounded-2xl tw-py-2 tw-px-3 tw-flex tw-justify-center tw-items-center tw-text-nowrap hover:tw-bg-sky-700"
-        href="/create_exam"
-        >{{ 'nav.createExam' | translate }}</a
-      >
+      @if (this.authService.isAuthenticated) {
+        <a
+          class="tw-text-white tw-rounded-2xl tw-py-2 tw-px-3 tw-flex tw-justify-center tw-items-center tw-text-nowrap"
+          href="/create_exam"
+          >{{ 'nav.createExam' | translate }}</a
+        >
+      }
+    </div>
+    <div class="tw-flex tw-flex-1 tw-gap-3 tw-justify-end">
+      @if (this.authService.isAuthenticated) {
+        <p-button
+          [label]="'nav.logOut' | translate"
+          (onClick)="this.logOut()"
+          styleClass="tw-text-white tw-bg-black tw-border-none"
+          class="tw-border-2 tw-border-solid tw-border-white tw-rounded-md tw-text-white" />
+        >
+      } @else if (this.authService.isAuthenticated === false) {
+        <a
+          class="tw-text-black tw-bg-white tw-rounded-md tw-py-2 tw-px-3 tw-flex tw-justify-center tw-items-center tw-text-nowrap"
+          href="/log_in"
+          >{{ 'nav.logIn' | translate }}</a
+        >
+        <a
+          class="tw-text-white tw-bg-black tw-border-solid tw-border-2 tw-border-white tw-rounded-md tw-py-2 tw-px-3 tw-justify-center tw-items-center tw-text-nowrap tw-hidden md:tw-flex"
+          href="/sign_up"
+          >{{ 'nav.signUp' | translate }}</a
+        >
+      }
     </div>
   </div>
 </nav>

@@ -5,8 +5,9 @@
     "exercises": "Ejercicios",
     "createExam": "Crear examen",
     "help": "Ayuda",
-    "login": "Iniciar sesión",
-    "logout": "Cerrar sesión"
+    "signUp": "Registrarse",
+    "logIn": "Iniciar sesión",
+    "logOut": "Cerrar sesión"
   },
   "home": {
     "title1": "Por un profesor, para profesores",
@@ -20,15 +21,14 @@
     "createExam": "Crear examen",
     "creatingExam": "Creando examen",
     "exercises": "Ejercicios",
-    "description": "Descripción",
+    "description": "Descripción del ejercicio",
     "quantity": "Cantidad",
     "example": "Se da una función cuadrática y se pide el vértice de la parábola",
     "addRow": "Agregar ejercicio",
     "uniqueSelection": "Selección única",
     "development": "Desarrollo",
     "trueOrFalse": "Verdadero o Falso",
-    "close": "Cerrar",
-    "initExamCreation": "Creando examen, eso puede demorar...",
+    "initExamCreation": "Creando examen, esto puede demorar...",
     "examCreationFailed": "Ocurrió un error creando el examen. Inténtalo más tarde",
     "examCreationSucceded": "Examen creado con éxito!",
     "openDocument": "Ver documento",
@@ -44,7 +44,40 @@
     "visualArts": "Artes visuales",
     "music": "Música",
     "technology": "Tecnología",
+    "english": "Inglés",
     "includeAnswers": "Incluir respuestas",
-    "loadExample": "Cargar ejemplo"
+    "loadExample": "Cargar ejemplo",
+    "contextSchool": "Contexto del colegio: Colegio laico del sur de Chile...",
+    "contextEstudent": "Contexto del estudiante: Estudiante de Primero medio..."
+  },
+  "signUp": {
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "email": "E-mail",
+    "password": "Contraseña",
+    "confirmPassword": "Confirmar contraseña",
+    "signUp": "Crear cuenta",
+    "haveAccount": "¿Ya tienes una cuenta?",
+    "logIn": "Inicia sesión",
+    "passwordsMustBeEqual": "* Las contraseñas deben ser iguales",
+    "suggestions": "Sugerencias",
+    "atLeastOneLowercase": "Al menos una minúscula",
+    "atLeastOneUppercase": "Al menos una mayúscula",
+    "atLeastOneNumeric": "Al menos un número",
+    "minimumSixCharacters": "Al menos 6 caracteres",
+    "promptLabel": "Ingresa una contraseña",
+    "weakLabel": "Muy simple",
+    "mediumLabel": "Seguridad media",
+    "strongLabel": "Muy segura",
+    "emailUsed": "El E-mail ya está en uso"
+  },
+  "logIn": {
+    "email": "E-mail",
+    "password": "Contraseña",
+    "rememberMe": "Recuérdame",
+    "logIn": "Iniciar sesión",
+    "haveAccount": "¿Aún no tienes una cuenta?",
+    "signUp": "Regístrate",
+    "userOrPasswordWrong": "Usuario o contraseña errónea"
   }
 }

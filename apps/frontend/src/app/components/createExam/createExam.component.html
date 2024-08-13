@@ -8,15 +8,11 @@
     class="tw-flex tw-flex-col tw-py-5 tw-gap-4"
     [formGroup]="this.examDataForm"
     (submit)="createTest($event)">
-    <div
-      class="tw-relative tw-h-10 tw-flex tw-justify-around tw-text-white tw-text-xs sm:tw-text-base sm:tw-h-12">
-      <button
-        class="tw-h-full tw-flex tw-flex-row tw-text-nowrap tw-gap-2 tw-justify-center tw-items-center tw-bg-blue-700 tw-rounded-3xl tw-px-3 disabled:tw-bg-gray-500 disabled:tw-text-gray-300 sm:tw-p-3 sm:tw-w-52"
-        type="button"
+    <div class="tw-relative tw-flex tw-justify-around tw-text-white">
+      <p-button
         [disabled]="this.isCreatingPdf"
-        (click)="this.setExample()">
-        {{ 'createExam.loadExample' | translate }}
-      </button>
+        [label]="'createExam.loadExample' | translate"
+        (click)="this.setExample()" />
     </div>
     <div class="tw-flex tw-gap-4 tw-flex-col-reverse lg:tw-flex-row">
       <div
@@ -25,105 +21,131 @@
         @for (section of this.sections; track section) {
           <section
             formArrayName="{{ section }}"
-            class="tw-bg-white tw-px-7 tw-py-3 tw-shadow-gray-500 tw-shadow-md">
+            class="tw-bg-white tw-px-2 tw-pb-3 tw-shadow-gray-500 tw-shadow-md sm:tw-px-7">
             <h2 class="tw-mb-3 tw-text-2xl">
               {{ 'createExam.' + section | translate }}
             </h2>
-            <div class="tw-flex tw-flex-col tw-gap-6 md:tw-gap-0">
-              @for (
-                exercise of this.getSectionArray(section).controls;
-                track exercise
-              ) {
-                <div formGroupName="{{ $index }}">
-                  <div
-                    class="tw-py-0 tw-px-0 tw-flex tw-flex-col md:tw-flex-row md:tw-gap-5">
-                    <mat-form-field
-                      class="tw-border-none tw-w-full"
-                      appearance="outline">
-                      <mat-label>{{
-                        'createExam.description' | translate
-                      }}</mat-label>
-                      <input
-                        matInput
-                        maxlength="200"
-                        placeholder="{{ 'createExam.example' | translate }}"
-                        formControlName="description" />
-                    </mat-form-field>
-                    <div class="tw-flex tw-justify-between md:tw-gap-5">
-                      <mat-form-field class="w-28" appearance="outline">
-                        <mat-label>{{
-                          'createExam.quantity' | translate
-                        }}</mat-label>
+            @if (this.getSectionArray(section).controls.length > 0) {
+              <div class="tw-flex tw-flex-col tw-gap-10 tw-mt-8 md:tw-gap-8">
+                @for (
+                  exercise of this.getSectionArray(section).controls;
+                  track exercise
+                ) {
+                  <div formGroupName="{{ $index }}">
+                    <div
+                      class="tw-py-0 tw-px-0 tw-flex tw-flex-col tw-gap-7 md:tw-flex-row md:tw-gap-5">
+                      <p-floatLabel class="tw-flex-1">
                         <input
-                          matInput
-                          type="number"
-                          min="1"
-                          max="10"
-                          formControlName="quantity" />
-                      </mat-form-field>
-                      <button
-                        mat-fab
-                        type="button"
-                        (click)="deleteRow(section, $index)">
-                        <mat-icon>delete</mat-icon>
-                      </button>
+                          class="tw-w-full"
+                          pInputText
+                          maxlength="200"
+                          id="description"
+                          formControlName="description"
+                          [placeholder]="'createExam.example' | translate" />
+                        <label for="description">{{
+                          'createExam.description' | translate
+                        }}</label>
+                      </p-floatLabel>
+
+                      <div class="tw-flex tw-justify-between tw-gap-5">
+                        <p-floatLabel class="tw-flex-1 md:tw-w-24">
+                          <p-inputNumber
+                            inputStyleClass="tw-w-full"
+                            inputId="minmax"
+                            formControlName="quantity"
+                            [min]="1"
+                            [max]="10" />
+                          <label for="description">{{
+                            'createExam.quantity' | translate
+                          }}</label>
+                        </p-floatLabel>
+
+                        <p-button
+                          icon="pi pi-times"
+                          severity="danger"
+                          (click)="deleteRow(section, $index)" />
+                      </div>
                     </div>
                   </div>
-                </div>
-              }
-            </div>
-            <button
-              mat-flat-button
-              class="tw-w-fit"
-              color="accent"
-              type="button"
-              (click)="this.addRow(section)">
-              {{ 'createExam.addRow' | translate }}
-            </button>
+                }
+              </div>
+            }
+
+            <p-button
+              styleClass="tw-mt-4"
+              [label]="'createExam.addRow' | translate"
+              (click)="this.addRow(section)" />
           </section>
         }
       </div>
       <aside
-        class="tw-h-fit tw-rounded-md tw-bg-white tw-p-5 tw-shadow-gray-500 tw-shadow-md tw-w-full lg:tw-w-80">
-        <div class="tw-relative tw-flex tw-flex-col">
-          <mat-form-field
-            class="tw-w-full"
-            [enterKeyHint]="false"
-            appearance="outline">
-            <mat-label>{{ 'createExam.subject' | translate }}</mat-label>
-            <mat-select formControlName="subject">
-              @for (subject of this.subjects; track $index) {
-                <mat-option [value]="subject">{{
-                  'createExam.' + subject | translate
-                }}</mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
-          <mat-checkbox formControlName="includeAnswers">{{
-            'createExam.includeAnswers' | translate
-          }}</mat-checkbox>
-          <button
-            class="tw-w-52 tw-h-12 tw-mx-auto tw-flex tw-flex-row tw-text-nowrap tw-gap-2 tw-justify-center tw-items-center tw-bg-blue-700 tw-rounded-3xl tw-px-3 tw-text-white disabled:tw-bg-gray-500 disabled:tw-text-gray-300"
+        class="tw-h-fit tw-rounded-md tw-bg-white tw-px-2 tw-py-5 tw-shadow-gray-500 tw-shadow-md sm:tw-p-5 lg:tw-w-96">
+        <div class="tw-relative tw-flex tw-flex-col tw-gap-5">
+          <p-dropdown
+            styleClass="tw-w-full"
+            formControlName="subject"
+            [options]="this.subjectsTranslated"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="{{ 'createExam.subject' | translate }}" />
+
+          <div class="tw-flex tw-items-center tw-gap-1">
+            <p-checkbox
+              formControlName="includeAnswers"
+              [binary]="true"
+              inputId="includeAnswers" />
+            <label for="includeAnswers">{{
+              'createExam.includeAnswers' | translate
+            }}</label>
+          </div>
+
+          <textarea
+            rows="5"
+            [placeholder]="'createExam.contextSchool' | translate"
+            formControlName="contextSchool"
+            class="tw-w-full tw-resize-none"
+            pInputTextarea
+            maxlength="200"
+            id="contextSchool"></textarea>
+
+          <textarea
+            rows="5"
+            [placeholder]="'createExam.contextEstudent' | translate"
+            formControlName="contextEstudent"
+            class="tw-w-full tw-resize-none"
+            pInputTextarea
+            maxlength="200"
+            id="contextEstudent"></textarea>
+
+          <p-button
+            [label]="
+              'createExam.' +
+                (this.isCreatingPdf ? 'creatingExam' : 'createExam') | translate
+            "
+            [loading]="this.isCreatingPdf"
             type="submit"
-            [disabled]="!this.getExamCanBeCreated()">
-            @if (this.isCreatingPdf) {
-              <mat-spinner diameter="20"></mat-spinner
-              >{{ 'createExam.creatingExam' | translate }}
-            } @else {
-              {{ 'createExam.createExam' | translate }}
-            }
-          </button>
+            class="tw-mx-auto"
+            [disabled]="!this.getExamCanBeCreated()" />
         </div>
       </aside>
     </div>
   </form>
-  <div
-    id="exam-pdf"
-    class="tw-relative tw-w-full tw-px-5 tw-flex tw-justify-center">
-    @if (this.pdfUrl !== undefined && !this.isCreatingPdf) {
-      <a class="open-document" [href]="this.pdfUrl" target="_blank">{{
-        'createExam.openDocument' | translate
-      }}</a>
+  <div id="exam-pdf">
+    @if (this.pdfUrl !== undefined || this.isCreatingPdf) {
+      <div class="tw-w-full tw-px-5 tw-flex tw-justify-center">
+        <div class="tw-p-8">
+          <div class="tw-relative tw-w-96 tw-h-48">
+            @if (this.isCreatingPdf) {
+              <p-skeleton width="100%" height="100%" />
+            } @else if (this.pdfUrl !== undefined) {
+              <a class="open-document" [href]="this.pdfUrl" target="_blank">{{
+                'createExam.openDocument' | translate
+              }}</a>
+            }
+          </div>
+        </div>
+      </div>
     }
   </div>
 </div>
+<p-toast styleClass="tw-top-24" />

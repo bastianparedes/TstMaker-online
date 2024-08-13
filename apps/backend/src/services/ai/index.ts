@@ -93,9 +93,11 @@ export class AiService {
     return [`A continuación te describo las preguntas de ${section}:`, ...exercises[section].map((exercise) => `${exercise.quantity} pregunta(s): ${exercise.description}`)].join('\n');
   }
 
-  async getExercisesLatexCodes(exercises: ExercisesDescription, subject: string) {
+  async getExercisesLatexCodes(exercises: ExercisesDescription, subject: string, contextSchool: string, contextEstudent: string) {
     const completePrompt = [
       `Soy profesor de "${subject}" y estoy creando un examen.`,
+      contextSchool === '' ? '' : `Contexto del colegio: ${contextSchool}`,
+      contextEstudent === '' ? '' : `Contexto del estudiante: ${contextEstudent}`,
       `Debes darme un YAML que contenga un mapa con las claves ${this.getSectionsToUse(exercises).join(', ')}`,
       ...this.getSectionsToUse(exercises).map((section) => this.getYamlDescription(section)),
       'A continuación te muestro un ejemplo de YAML que me puedes responder.',

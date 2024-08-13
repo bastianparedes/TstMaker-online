@@ -6,7 +6,7 @@ module.exports = {
   },
   plugins: [],
   corePlugins: {
-    preflight: true
+    preflight: false,
   },
-  prefix: 'tw-'
+  prefix: "tw-",
 };

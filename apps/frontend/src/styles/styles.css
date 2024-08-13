@@ -1,34 +1,12 @@
+@import "normalize.css";
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field .mdc-notched-outline__notch {
-  border-right-style: hidden;
-}
-
-.mat-mdc-input-element {
-  box-shadow: none !important;
-}
-
-.sticky {
-  position: sticky !important;
-}
-
-[type='text'],
-[type='email'],
-[type='url'],
-[type='password'],
-[type='number'],
-[type='date'],
-[type='datetime-local'],
-[type='month'],
-[type='search'],
-[type='tel'],
-[type='time'],
-[type='week'],
-[multiple],
-textarea,
-select {
-  padding: 0;
-  border: none;
+a {
+  text-decoration: none;
 }

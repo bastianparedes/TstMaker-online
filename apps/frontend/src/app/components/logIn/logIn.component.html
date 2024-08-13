@@ -1,0 +1,54 @@
+<form
+  class="tw-bg-white tw-flex tw-flex-col tw-px-5 tw-py-7 tw-gap-8 tw-mx-auto tw-my-5 tw-min-w-64 tw-w-11/12 tw-max-w-2xl tw-rounded-lg tw-shadow-gray-500 tw-shadow-md sm:tw-w-9/12 sm:tw-px-7"
+  [formGroup]="this.userData"
+  (submit)="onSubmit($event)">
+  <p-floatLabel class="tw-flex-1">
+    <input
+      pInputText
+      [class]="{
+        'tw-w-full': true,
+        'ng-invalid ng-dirty': this.userData.get('email')?.invalid
+      }"
+      id="email"
+      formControlName="email"
+      maxlength="255" />
+    <label for="email">{{ 'signUp.email' | translate }}</label>
+  </p-floatLabel>
+
+  <p-floatLabel class="tw-w-full">
+    <p-password
+      [feedback]="false"
+      [class]="{
+        'ng-invalid ng-dirty': this.userData.get('password')?.invalid
+      }"
+      inputStyleClass="tw-w-full"
+      styleClass="tw-w-full"
+      formControlName="password"
+      maxlength="255"
+      [toggleMask]="true" />
+    <label for="password">{{ 'signUp.password' | translate }}</label>
+  </p-floatLabel>
+
+  <div class="tw-flex tw-items-center tw-gap-1">
+    <p-checkbox
+      formControlName="keepSesion"
+      [binary]="true"
+      inputId="keepSesion" />
+    <label for="keepSesion">{{ 'logIn.rememberMe' | translate }}</label>
+  </div>
+
+  <p-button
+    class="tw-mx-auto"
+    type="submit"
+    [label]="'logIn.logIn' | translate"
+    [loading]="this.isLogingIn"
+    [disabled]="this.userData.invalid" />
+
+  <p class="tw-text-center tw-my-0">
+    {{ 'logIn.haveAccount' | translate }}
+    <a class="tw-text-blue-500" href="/sign_up">{{
+      'logIn.signUp' | translate
+    }}</a>
+  </p>
+</form>
+<p-toast styleClass="tw-top-24" />

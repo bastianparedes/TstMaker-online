@@ -30,7 +30,9 @@ services:
       dockerfile: Dockerfile
     image: exampy/backend
     environment:
+      BASE_URL: ${BASE_URL:-http://localhost:4200}
       ADDRESS: ${IP:-0.0.0.0}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-12345}
       GOOGLE_GENERATIVE_AI_API_KEY: ${GOOGLE_GENERATIVE_AI_API_KEY:?error}
       DATABASE_PROTOCOL: ${DATABASE_PROTOCOL:-postgresql}
       DATABASE_USER: ${DATABASE_USER:-postgres}
@@ -39,6 +41,14 @@ services:
       DATABASE_PORT: ${DATABASE_PORT:-5432}
       DATABASE_NAME: ${DATABASE_NAME:-postgres}
       DATABASE_SSL_MODE: ${DATABASE_SSL_MODE:-disable}
+      EMAIL_ID: ${EMAIL_ID:?error}
+      EMAIL_PASSWORD: ${EMAIL_PASSWORD:?error}
+      EMAIL_SERVICE: ${EMAIL_SERVICE:?error}
+      EMAIL_HOST: ${EMAIL_HOST:?error}
+      EMAIL_PORT: ${EMAIL_PORT:?error}
+      CLOUDINARY_CLOUD_NAME: ${CLOUDINARY_CLOUD_NAME:?error}
+      CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY:?error}
+      CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET:?error}
     ports:
       - "3000:3000"
     depends_on:

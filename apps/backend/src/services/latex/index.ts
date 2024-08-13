@@ -143,7 +143,7 @@ export class LatexService {
     return [this.packages, '\\begin{document}%', this.studentDataTable, body, '\\end{document}%'].join('\n');
   }
 
-  async getPdfUrl(latexCode: string) {
+  async getFileUrl(latexCode: string) {
     const formData = new FormData();
 
     formData.append('filecontents[]', new Blob([latexCode], { type: 'text/plain' }), 'document.tex');

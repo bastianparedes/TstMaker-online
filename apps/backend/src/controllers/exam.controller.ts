@@ -1,13 +1,17 @@
-import { Controller, Inject, Post, Body, Req, Res } from '@nestjs/common';
+import { Controller, Inject, Post, Body, Req, Res, UseGuards } from '@nestjs/common';
 import { AiService } from '../services/ai';
 import { DbService } from '../services/db';
 import { LatexService } from '../services/latex';
+import { AuthService } from '../services/auth.service';
+import { FileService } from '../services/file.service';
 import type { FastifyReply, FastifyRequest } from 'fastify';
-import { IsInt, Max, Min, IsString, MaxLength, IsArray, ValidateNested, IsOptional, IsObject, IsNotEmptyObject, IsBoolean, IsIn } from 'class-validator';
+import { IsInt, Max, Min, IsString, MaxLength, IsArray, ValidateNested, IsOptional, IsObject, IsNotEmptyObject, IsBoolean } from 'class-validator';
 import { Type } from 'class-transformer';
 import { getShuffledArray } from '../utils/array';
 import { writeFileSync } from 'fs';
 import { Subject } from '../types/exercise';
+import { AuthGuard } from '../guards/auth.guard';
+import fetch from 'node-fetch';
 
 class ExerciseDescriptionValidator {
   @IsString()
@@ -51,11 +55,19 @@ class BodyValidator {
   includeAnswers: boolean;
 
   @IsString()
-  @IsIn(['languageAndCommunication', 'mathematics', 'physics', 'chemistry', 'biology', 'naturalSciences', 'geographyAndSocialSciences', 'physicalEducation', 'visualArts', 'music', 'technology'])
   subject: Subject;
+
+  @IsString()
+  @MaxLength(200)
+  contextSchool: string;
+
+  @IsString()
+  @MaxLength(200)
+  contextEstudent: string;
 }
 
 @Controller('exam')
+@UseGuards(AuthGuard)
 export class ExamController {
   @Inject(DbService)
   dbService = new DbService();
@@ -66,9 +78,17 @@ export class ExamController {
   @Inject(LatexService)
   latexService = new LatexService();
 
+  @Inject(FileService)
+  fileService = new FileService();
+
+  @Inject(AuthService)
+  authService = new AuthService();
+
   @Post()
   async PostCreateExam(@Body() body: BodyValidator, @Req() req: FastifyRequest, @Res() res: FastifyReply) {
-    const exercisesLatexCodes = await this.aiService.getExercisesLatexCodes(body.exercises, body.subject);
+    const { id: userId } = this.authService.decodeToken(req.cookies[this.authService.tokenName]);
+
+    const exercisesLatexCodes = await this.aiService.getExercisesLatexCodes(body.exercises, body.subject, body.contextSchool, body.contextEstudent);
 
     const latexLinesQuestions: string[] = [];
     const latexLinesAnswers: string[] = ['\\newpage\\begin{center}\\LARGE Respuestas\\end{center}'];
@@ -98,15 +118,35 @@ export class ExamController {
 
     if (process.env.NODE_ENV === 'development') writeFileSync('latex.tex', completeLatexCode, 'utf-8');
 
-    const pdfUrl = new URL(await this.latexService.getPdfUrl(completeLatexCode));
-    if (!pdfUrl.href.endsWith('.pdf')) return res.status(500).send(pdfUrl.href);
+    const fileUrl = new URL(await this.latexService.getFileUrl(completeLatexCode));
+    if (!fileUrl.href.endsWith('.pdf'))
+      return res.status(500).send({
+        success: false,
+        errors: ['badLatex'],
+        data: {
+          fileName: fileUrl.href
+        }
+      });
 
-    const pathSections = pdfUrl.pathname.split('/');
+    const pathSections = fileUrl.pathname.split('/');
     const lastPathSection = pathSections[pathSections.length - 1];
 
-    res.send(lastPathSection);
-    await this.dbService.db.insert(this.dbService.schema.Exams).values({
-      name: lastPathSection
+    res.send({
+      success: true,
+      errors: [],
+      data: {
+        fileName: lastPathSection
+      }
+    });
+
+    await this.dbService.db.transaction(async (tx) => {
+      const buffer = await fetch(fileUrl).then((response) => response.buffer());
+      const fileId = await this.fileService.upload(userId, buffer, 'raw');
+
+      await tx.insert(this.dbService.schema.Exams).values({
+        id: fileId,
+        userId: userId
+      });
     });
   }
 }
