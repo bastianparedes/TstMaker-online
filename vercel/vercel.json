@@ -3,8 +3,8 @@
   ],
   "rewrites": [
     { "source": "/api/pdf/:path*", "destination": "https://texlive.net/latexcgi/:path*" },
-    { "source": "/api/:path*", "destination": "https://exampy-backend.vercel.app/:path*" },
-    { "source": "/", "destination": "https://exampy-frontend.vercel.app/" },
-    { "source": "/:match*", "destination": "https://exampy-frontend.vercel.app/:match*" }
+    { "source": "/api/:path*", "destination": "https://trilma-backend.vercel.app/:path*" },
+    { "source": "/", "destination": "https://trilma-frontend.vercel.app/" },
+    { "source": "/:match*", "destination": "https://trilma-frontend.vercel.app/:match*" }
   ]
 }

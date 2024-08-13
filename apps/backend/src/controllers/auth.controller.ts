@@ -13,7 +13,7 @@ const getHtmlTemplate = (name: string, link: string) => `
       <tr>
       <tr>
         <td style="padding:0; font-family:'Segoe UI Light','Segoe UI','Helvetica Neue Medium',Arial,sans-serif; font-size:41px; color:#2672ec">
-          Bienvenido a Exampy ${name}
+          Bienvenido a Trilma ${name}
         </td>
       </tr>
       <tr>
@@ -101,7 +101,7 @@ export class AuthController {
       .returning();
 
     const token = await this.authService.generateToken(id);
-    this.mailService.sendMail(body.email, 'Bienvenido a Exampy', '', getHtmlTemplate(`${body.firstName} ${body.lastName}`, `${process.env.BASE_URL}/verify/${token}`));
+    this.mailService.sendMail(body.email, 'Bienvenido a Trilma', '', getHtmlTemplate(`${body.firstName} ${body.lastName}`, `${process.env.BASE_URL}/verify/${token}`));
     return res.status(201).send({
       success: true,
       errors: [],
@@ -131,7 +131,7 @@ export class AuthController {
 
     if (!userData.verified) {
       const token = await this.authService.generateToken(userData.id);
-      this.mailService.sendMail(body.email, 'Bienvenido a Exampy', '', getHtmlTemplate(`${userData.firstName} ${userData.lastName}`, `${process.env.BASE_URL}/verify/${token}`));
+      this.mailService.sendMail(body.email, 'Bienvenido a Trilma', '', getHtmlTemplate(`${userData.firstName} ${userData.lastName}`, `${process.env.BASE_URL}/verify/${token}`));
       return res.send({
         success: true,
         errors: ['unverified'],

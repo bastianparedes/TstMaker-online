@@ -17,7 +17,7 @@ services:
     build:
       context: ./apps/frontend
       dockerfile: Dockerfile
-    image: exampy/frontend
+    image: trilma/frontend
     ports:
       - "4200:4200"
     volumes:
@@ -28,7 +28,7 @@ services:
     build:
       context: ./apps/backend
       dockerfile: Dockerfile
-    image: exampy/backend
+    image: trilma/backend
     environment:
       BASE_URL: ${BASE_URL:-http://localhost:4200}
       ADDRESS: ${IP:-0.0.0.0}

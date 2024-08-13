@@ -1,4 +1,4 @@
-# Exampy
+# Trilma
 Aplicación web pensada para facilitar el trabajo a los profesores en la creación de exámenes.
 
 ## Problema
